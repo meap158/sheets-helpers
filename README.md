@@ -1,20 +1,25 @@
 # Sheets Helpers - Image Uploader
 
-Quickly add images to Google Sheets from either upload or clipboard, with support for batch uploading.
+Quickly add images to Google Sheets cells from local uploads or clipboard, with batch uploading support.
 
 ## Installation Guide
 To use the Sheets Helpers - Image Uploader script, follow these steps:
 
 1. Open your Google Sheets document.
 2. From the menu bar, go to "Extensions" and choose "Apps Script."
-3. A new tab will open with the Apps Script editor. Replace the existing code with the contents of the "Uploader.gs" and other files from this repository.
+3. A new tab will open with the Apps Script editor. Replace the existing code with the contents of the script "Uploader.gs" and other files from this repository.
 4. Save the script by clicking on the floppy disk icon or pressing Ctrl + S (Cmd + S for Mac).
 5. Close the Apps Script editor tab and refresh your Google Sheets document. You should now see a new option labeled "Sheets Helpers" in the menu bar.
+   
+Your Apps Script files should consist of the following files arranged something like this:
 
-Demo Video
-Sheets Helpers - Image Uploader Demo Video
+![sheets-helper](https://github.com/meap158/sheets-helpers/assets/14327094/adbfd0e3-96d0-4fe0-9d9a-83ea0607c86c)
 
-In this demo video, you can see how to quickly add images using the Sheets Helpers - Image Uploader script. It demonstrates the steps for selecting cells, opening the Image Uploader, uploading images, and inserting them back into the cells. Watch the video to see the script in action and streamline your image insertion process in Google Sheets.
+Watch the demo video to see the script in action:
+
+[<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/14327094/254980913-8590e7d2-2810-44d1-86a1-537c70e8f7f2.png" width="50%">](https://github.com/meap158/sheets-helpers/assets/14327094/37f1ebdb-cb7a-4103-bf63-d8243079c001 "Demo: Sheets Helpers")
+
+In this demo video, you can see how to quickly add images using the Sheets Helpers. It demonstrates the steps for selecting cells, opening the Image Uploader, uploading images, and inserting them back into the cells.
 
 ## Usage Guide
 
