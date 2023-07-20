@@ -1,6 +1,6 @@
 # Sheets Helpers - Image Uploader
 
-Quickly add images to Google Sheets from either upload or clipboard, with support for batch uploading.
+Quickly add images to Google Sheets cells from local uploads or clipboard, with batch uploading support.
 
 ## Installation Guide
 To use the Sheets Helpers - Image Uploader script, follow these steps:
