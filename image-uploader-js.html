@@ -1,0 +1,281 @@
+<script>
+
+window.addEventListener('load', function() {
+
+    google.script.run.withSuccessHandler(updateTable).getSelectedCellNames();
+
+    const masterInput = document.getElementById('master-input');
+    masterInput.addEventListener('change', handleFileChange);
+
+    const refreshButton = document.getElementById('refreshButton');
+    refreshButton.addEventListener('click', function() {
+        var fileTable = document.getElementById('fileTable');
+        var tbody = fileTable.querySelector('tbody');
+        tbody.innerHTML = ''; // Clear the tbody content
+        google.script.run.withSuccessHandler(updateTable).getSelectedCellNames();
+    });
+
+});
+
+
+function updateTable(cellNames) {
+    var fileTable = document.getElementById('fileTable');
+    var tbody = fileTable.querySelector('tbody');
+
+    for (var i = 0; i < cellNames.length; i++) {
+        var row = document.createElement("tr");
+
+        // Add the row number element
+        var rowNumber = document.createElement("th");
+        rowNumber.style.textAlign = "center"; // Center the row number horizontally
+        rowNumber.setAttribute("scope", "row");
+        rowNumber.textContent = i + 1; // To start numbering from 1
+        row.appendChild(rowNumber);
+
+
+        // Add the cellName element
+        var cellName = document.createElement("td");
+        cellName.textContent = cellNames[i];
+        row.appendChild(cellName);
+
+
+        // Add the image element
+        var imageCell = document.createElement("td");
+        imageCell.style.textAlign = "center"; // Center the image horizontally
+        var image = document.createElement("img");
+        image.setAttribute("src", "#"); // Replace with the desired image source
+        image.classList.add("uploaded-image"); // Add a class to identify the image element
+        image.style.width = "80px"; // Set the width to 80px
+        // Function to check if the image source is valid
+        function isValidImageSrc(src) {
+            return src !== "#" && src !== "";
+        }
+        // Add event listeners for image
+        image.addEventListener('mouseover', function() {
+            if (isValidImageSrc(image.getAttribute("src"))) {
+                image.style.cursor = 'pointer';
+                image.setAttribute("title", "Click to remove this image"); // Add a tooltip to inform the user
+            } else {
+                image.style.cursor = 'default';
+                image.removeAttribute("title");
+            }
+        });
+        image.addEventListener('mouseout', function() {
+            image.style.cursor = 'default';
+        });
+        image.addEventListener('click', function(event) {
+            var row = image.closest('tr'); // Find the row containing the image and input elements
+            if (isValidImageSrc(image.getAttribute("src"))) {
+                image.setAttribute("src", "#"); // Set the image source to an empty string
+                image.style.width = "80px"; // Set the width back to 80px
+                var fileInput = row.querySelector('input[type="file"]'); // Find the input element in the same row as the image
+                fileInput.value = ""; // Remove the file from the input element
+            }
+        });
+        imageCell.appendChild(image);
+        row.appendChild(imageCell);
+
+
+        // Add the input element (upload)
+        var fileInput = document.createElement("td");
+        var inputFile = document.createElement("input");
+        inputFile.setAttribute("class", "form-control form-control-sm"); // Bootstrap class for Small file input
+        inputFile.setAttribute("type", "file");
+        inputFile.setAttribute("name", "imageUpload");
+        fileInput.appendChild(inputFile);
+        row.appendChild(fileInput);
+
+        // Add the input element (text) for Pasting from clipboard
+        var textInput = document.createElement("td");
+        textInput.style.width = "15%";
+        var inputText = document.createElement("input");
+        inputText.setAttribute("type", "text");
+        inputText.setAttribute("class", "form-control form-control-sm col-auto");
+        inputText.setAttribute("aria-describedby", "inputGroup-sizing-sm");
+        inputText.setAttribute("placeholder", "Paste img");
+        textInput.appendChild(inputText);
+        row.appendChild(textInput);
+
+        tbody.appendChild(row);
+    }
+
+
+    // Attach event listeners to file inputs
+    var fileInputs = fileTable.querySelectorAll('input[type="file"]');
+    fileInputs.forEach(function(input) {
+        input.addEventListener('change', function() {
+            var row = this.parentNode.parentNode; // Get the parent row of the file input
+            var img = row.querySelector('.uploaded-image'); // Find the corresponding image element within the row
+
+            if (this.files && this.files[0]) {
+                img.onload = function() {
+                    URL.revokeObjectURL(img.src);
+                };
+                img.src = URL.createObjectURL(this.files[0]);
+                img.setAttribute("title", "Click to remove this image"); // Add a tooltip to inform the user when the image has a valid source
+            } else {
+                img.src = '#'; // Set the image source to an empty string
+                img.style.width = '80px'; // Set the width style to 80px
+            }
+        });
+    });
+
+    // Slider to change the scale of the image elements with the class "uploaded-image,"
+    var scaleSlider = document.getElementById('scaleSlider');
+    var images = document.getElementsByClassName('uploaded-image');
+
+    scaleSlider.addEventListener('input', function() {
+        var scaleValue = this.value;
+        for (var i = 0; i < images.length; i++) {
+            images[i].style.width = (40 * scaleValue) + 'px';
+        }
+        // Change the label indicating the current value of the slider
+        const sliderValue = document.getElementById('sliderValue');
+        sliderValue.textContent = scaleValue + "x";
+    });
+
+    // Find all the text fields within the table body
+    const textFields = tbody.querySelectorAll('input[type="text"]');
+    // Add event listener to each text field
+    textFields.forEach(textField => {
+        handleImagePaste(textField);
+    });
+
+    // Enable the input and button elements
+    document.getElementById("master-input").removeAttribute("disabled");
+    document.getElementById("insert-all-btn").removeAttribute("disabled");
+
+}
+
+
+// Handle file change event
+function handleFileChange(event) {
+    const fileList = event.target.files; // Get list of selected files
+
+    // Get all single input elements in the table
+    const singleInputs = document.querySelectorAll('#fileTable input[type="file"]');
+
+    // Iterate through each single input element and assign corresponding file from the master input
+    singleInputs.forEach((singleInput, index) => {
+        if (fileList[index]) {
+            const file = fileList[index];
+            const fileArray = [file];
+            const filelistObject = new DataTransfer();
+            fileArray.forEach(file => filelistObject.items.add(file));
+            singleInput.files = filelistObject.files;
+
+            // Trigger the change event on a file input element (singleInput)
+            const event = new Event('change');
+            singleInput.dispatchEvent(event);
+
+        } else {
+            singleInput.value = ''; // Clear the value if no corresponding file exists
+            // Trigger the change event on a file input element (singleInput)
+            const event = new Event('change');
+            singleInput.dispatchEvent(event);
+        }
+    });
+}
+
+
+function handleImagePaste(textField) {
+    // Get the parent row of the text field
+    const row = textField.closest('tr');
+
+    // Get the file field in the same row
+    const fileField = row.querySelector('input[name="imageUpload"]');
+
+    // Add event listener to the text field for 'paste' event
+    textField.addEventListener('paste', event => {
+        // Get the clipboard data
+        const clipboardData = event.clipboardData || window.clipboardData;
+
+        // Check if clipboard data contains an image
+        if (clipboardData && clipboardData.files && clipboardData.files.length > 0) {
+            const file = clipboardData.files[0];
+
+            // Create a new FileList object with the pasted image file
+            const fileList = new DataTransfer();
+            fileList.items.add(file);
+
+            // Assign the FileList to the file field
+            fileField.files = fileList.files;
+
+            // Optional: Display the image preview
+            const previewImage = row.querySelector('.uploaded-image');
+            previewImage.src = URL.createObjectURL(file);
+        }
+    });
+}
+
+
+function isFileUploadAllowed(file) {
+    // Check if a file is selected
+    if (!file) {
+        console.log("No file selected.");
+        return false;
+    }
+    // Check file size (maximum allowed size: 10MB)
+    var maxSizeInBytes = 10 * 1024 * 1024;
+    if (file.size > maxSizeInBytes) {
+        console.log("File size exceeds the maximum allowed limit.");
+        return false;
+    }
+    // Check file type (allowed types: image/jpeg, image/png, application/pdf)
+    var allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+    if (!allowedTypes.includes(file.type)) {
+        console.log("Invalid file type. Only JPEG, PNG, and PDF files are allowed.");
+        return false;
+    }
+    // All checks passed, file can be uploaded
+    return true;
+}
+
+
+function insertAllImages() {
+    var fileTable = document.getElementById('fileTable');
+    var rows = fileTable.getElementsByTagName("tr");
+
+    for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+        var cells = rows[i].getElementsByTagName("td");
+        var file = cells[2].querySelector("input[type='file']").files[0];
+        var cellNotation = cells[0].textContent;
+        // console.log('first', cellNotation);
+
+        // Verify and Upload file
+        var fileIsValid = isFileUploadAllowed(file);
+        if (fileIsValid) {
+            (function(file, cellNotationValue) { // Create a closure to capture cellNotationValue
+                const fr = new FileReader();
+                fr.readAsArrayBuffer(file);
+                fr.onload = (f) => {
+                    var fileBlob = [
+                        [...new Int8Array(f.target.result)], file.type, file.name
+                    ];
+                    // console.log('second', cellNotationValue);
+                    // console.log(`Inserting "${file.name}" into "${cellNotationValue}"...`);
+                    const logElement = document.getElementById('log'); // Get the log element
+                    logElement.innerHTML = `Inserting "${file.name}" into "${cellNotationValue}"...`; // Change the log message
+                    google.script.run
+                        .withSuccessHandler(onImageUploadSuccess(file.name, cellNotationValue))
+                        .updateCellWithImage(fileBlob, cellNotationValue);
+                };
+            })(file, cellNotation); // Pass file and cellNotation as arguments to the closure
+        }
+    }
+}
+
+
+function onImageUploadSuccess(fileName, cellNotationValue) {
+    // console.log(`Completed inserting "${fileName}" into "${cellNotationValue}"...`);
+    const logElement = document.getElementById('log'); // Get the log element
+
+    setTimeout(() => {
+        logElement.innerHTML = 'Start uploading something...'; // Change the log message after 10 seconds
+    }, 10000);
+
+    logElement.innerHTML += `<br>Completed inserting "${fileName}" into "${cellNotationValue}"...`; // Change the log message
+
+}
+
+</script>

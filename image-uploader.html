@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <?!= include("image-uploader-css"); ?>
+
+    <!-- Import Google Icon Font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <!-- Import cached version of Bootstrap’s compiled CSS and JS from jsDelivr -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+    <!-- Let the browser know the website is optimized for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <div class="mb-3 d-flex sticky-container">
+        <input class="form-control form-control-lg me-2" type="file" id="master-input" multiple="" disabled>
+        <button class="btn btn-primary btn-sm" id="insert-all-btn" onclick="insertAllImages()" disabled>Insert All</button>
+        <button class="btn btn-secondary btn-sm ms-2" id="refreshButton">Refresh</button>
+    </div>
+
+    <div class="slider-container">
+        <!-- Slider HTML -->
+        <div class="slider">
+            <input type="range" min="1" max="5" step="1" value="2" id="scaleSlider">
+        </div>
+        <div class="separator"></div>
+        <span id="sliderValue">2x</span>
+        <div class="separator"></div>
+        <div id="log">Start uploading something...</div> <!-- Add a div element for the log messages -->
+    </div>
+
+    <table id="fileTable" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th>A1</th>
+                <th>Preview</th>
+                <th>Upload</th>
+                <th>Clipboard</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Add more table rows as needed -->
+        </tbody>
+    </table>
+
+    <?!= include("image-uploader-js"); ?>
+
+</body>
+
+</html>
