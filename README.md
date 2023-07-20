@@ -1,6 +1,20 @@
 # Sheets Helpers - Image Uploader
 
-Quickly add images from either upload or clipboard, with support for batch uploading.
+Quickly add images to Google Sheets from either upload or clipboard, with support for batch uploading.
+
+## Installation Guide
+To use the Sheets Helpers - Image Uploader script, follow these steps:
+
+1. Open your Google Sheets document.
+2. From the menu bar, go to "Extensions" and choose "Apps Script."
+3. A new tab will open with the Apps Script editor. Replace the existing code with the contents of the "Uploader.gs" and other files from this repository.
+4. Save the script by clicking on the floppy disk icon or pressing Ctrl + S (Cmd + S for Mac).
+5. Close the Apps Script editor tab and refresh your Google Sheets document. You should now see a new option labeled "Sheets Helpers" in the menu bar.
+
+Demo Video
+Sheets Helpers - Image Uploader Demo Video
+
+In this demo video, you can see how to quickly add images using the Sheets Helpers - Image Uploader script. It demonstrates the steps for selecting cells, opening the Image Uploader, uploading images, and inserting them back into the cells. Watch the video to see the script in action and streamline your image insertion process in Google Sheets.
 
 ## Usage Guide
 
