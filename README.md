@@ -17,7 +17,7 @@ Your Apps Script files should consist of the following files arranged something 
 
 Watch the demo video to see the script in action:
 
-[<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/14327094/254980913-8590e7d2-2810-44d1-86a1-537c70e8f7f2.png" width="50%">]([https://github.com/meap158/VideoFactory/assets/108891710/b7bd591e-29d6-43c8-8912-8c3fd59a72a2](https://github.com/meap158/sheets-helpers/assets/14327094/df17414b-f65c-4154-bd2d-c6a126dbb875) "Demo: Sheets Helpers")
+[<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/14327094/254980913-8590e7d2-2810-44d1-86a1-537c70e8f7f2.png" width="50%">](https://github.com/meap158/sheets-helpers/assets/14327094/37f1ebdb-cb7a-4103-bf63-d8243079c001 "Demo: Sheets Helpers")
 
 In this demo video, you can see how to quickly add images using the Sheets Helpers. It demonstrates the steps for selecting cells, opening the Image Uploader, uploading images, and inserting them back into the cells.
 
