@@ -50,28 +50,6 @@ function updateTable(cellNames) {
         function isValidImageSrc(src) {
             return src !== "#" && src !== "";
         }
-        // Add event listeners for image
-        image.addEventListener('mouseover', function() {
-            if (isValidImageSrc(image.getAttribute("src"))) {
-                image.style.cursor = 'pointer';
-                image.setAttribute("title", "Click to remove this image"); // Add a tooltip to inform the user
-            } else {
-                image.style.cursor = 'default';
-                image.removeAttribute("title");
-            }
-        });
-        image.addEventListener('mouseout', function() {
-            image.style.cursor = 'default';
-        });
-        image.addEventListener('click', function(event) {
-            var row = image.closest('tr'); // Find the row containing the image and input elements
-            if (isValidImageSrc(image.getAttribute("src"))) {
-                image.setAttribute("src", "#"); // Set the image source to an empty string
-                image.style.width = "80px"; // Set the width back to 80px
-                var fileInput = row.querySelector('input[type="file"]'); // Find the input element in the same row as the image
-                fileInput.value = ""; // Remove the file from the input element
-            }
-        });
         imageCell.appendChild(image);
         row.appendChild(imageCell);
 
@@ -112,18 +90,31 @@ function updateTable(cellNames) {
                     URL.revokeObjectURL(img.src);
                 };
                 img.src = URL.createObjectURL(this.files[0]);
+                img.style.cursor = 'pointer';
                 img.setAttribute("title", "Click to remove this image"); // Add a tooltip to inform the user when the image has a valid source
+                // Add click event listener to the image to remove the content of the input
+                img.addEventListener('click', function() {
+                    this.src = '#'; // Set the image source to an empty string
+                    this.style.width = '80px'; // Set the width style to 80px
+                    this.style.cursor = 'default';
+                    this.removeAttribute("title");
+
+                    var fileInput = row.querySelector('input[type="file"]'); // Find the input element in the same row as the image
+                    fileInput.value = ""; // Remove the file from the input element
+                });
             } else {
                 img.src = '#'; // Set the image source to an empty string
                 img.style.width = '80px'; // Set the width style to 80px
+                img.style.cursor = 'default';
+                img.removeAttribute("title");
             }
         });
     });
 
+
     // Slider to change the scale of the image elements with the class "uploaded-image,"
     var scaleSlider = document.getElementById('scaleSlider');
     var images = document.getElementsByClassName('uploaded-image');
-
     scaleSlider.addEventListener('input', function() {
         var scaleValue = this.value;
         for (var i = 0; i < images.length; i++) {
@@ -134,12 +125,14 @@ function updateTable(cellNames) {
         sliderValue.textContent = scaleValue + "x";
     });
 
+
     // Find all the text fields within the table body
     const textFields = tbody.querySelectorAll('input[type="text"]');
     // Add event listener to each text field
     textFields.forEach(textField => {
         handleImagePaste(textField);
     });
+
 
     // Enable the input and button elements
     document.getElementById("master-input").removeAttribute("disabled");
@@ -255,7 +248,9 @@ function insertAllImages() {
                     // console.log('second', cellNotationValue);
                     // console.log(`Inserting "${file.name}" into "${cellNotationValue}"...`);
                     const logElement = document.getElementById('log'); // Get the log element
-                    logElement.innerHTML = `Inserting "${file.name}" into "${cellNotationValue}"...`; // Change the log message
+                    const logMessage = `Inserting "${file.name}" into "${cellNotationValue}"...`;
+                    logElement.innerHTML = logMessage; // Change the log message
+                    // console.log(logMessage);
                     google.script.run
                         .withSuccessHandler(onImageUploadSuccess(file.name, cellNotationValue))
                         .updateCellWithImage(fileBlob, cellNotationValue);
