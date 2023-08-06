@@ -52,8 +52,8 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
   // Add headers as the first row in the result array
   result.push([
     "Image URL",
-    "Width",
-    "Height",
+    "Civitai URL",
+    "Resolution",
     "😢", // "Cry Count",
     "😂", // "Laugh Count",
     "👍", // "Like Count",
@@ -77,6 +77,7 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
     var item = items[i];
     
     // Extract values for the specified keys with error handling
+    var id = getSafeValue(item, "id");
     var imageUrl = getSafeValue(item, "url");
     var width = getSafeValue(item, "width");
     var height = getSafeValue(item, "height");
@@ -97,11 +98,14 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
     var cfgScale = getSafeValue(item.meta, "cfgScale");
     var ClipSkip = getSafeValue(item.meta, "Clip skip");
 
+    var civitaiURL = `https://civitai.com/images/${id}`
+    var resolution = `${width}x${height}`
+
     // Add the values as a new row in the result array
     result.push([
       imageUrl,
-      width,
-      height,
+      civitaiURL,
+      resolution,
       cryCount,
       laughCount,
       likeCount,
