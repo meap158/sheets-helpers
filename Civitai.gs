@@ -53,7 +53,7 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
   result.push([
     "Image URL",
     "Civitai URL",
-    "Resolution",
+    "Image Size",
     "😢", // "Cry Count",
     "😂", // "Laugh Count",
     "👍", // "Like Count",
@@ -99,13 +99,13 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
     var ClipSkip = getSafeValue(item.meta, "Clip skip");
 
     var civitaiURL = `https://civitai.com/images/${id}`
-    var resolution = `${width}x${height}`
+    var imageSize = `${width}x${height}`
 
     // Add the values as a new row in the result array
     result.push([
       imageUrl,
       civitaiURL,
-      resolution,
+      imageSize,
       cryCount,
       laughCount,
       likeCount,
