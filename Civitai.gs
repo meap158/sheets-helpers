@@ -54,11 +54,11 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
     "Image URL",
     "Civitai URL",
     "Image Size",
-    "😢", // "Cry Count",
-    "😂", // "Laugh Count",
     "👍", // "Like Count",
     "👎", // "Dislike Count",
     "❤️", // "Heart Count",
+    "😂", // "Laugh Count",
+    "😢", // "Cry Count",
     "💬", // "Comment Count",
     "Prompt",
     "Negative Prompt",
@@ -81,11 +81,11 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
     var imageUrl = getSafeValue(item, "url");
     var width = getSafeValue(item, "width");
     var height = getSafeValue(item, "height");
-    var cryCount = getSafeValue(item.stats, "cryCount");
-    var laughCount = getSafeValue(item.stats, "laughCount");
     var likeCount = getSafeValue(item.stats, "likeCount");
     var dislikeCount = getSafeValue(item.stats, "dislikeCount");
     var heartCount = getSafeValue(item.stats, "heartCount");
+    var laughCount = getSafeValue(item.stats, "laughCount");
+    var cryCount = getSafeValue(item.stats, "cryCount");
     var commentCount = getSafeValue(item.stats, "commentCount");
     var prompt = getSafeValue(item.meta, "prompt");
     var negativePrompt = getSafeValue(item.meta, "negativePrompt");
@@ -106,11 +106,11 @@ function retrieveCivitaiImages(limit, nsfw, sort, period) {
       imageUrl,
       civitaiURL,
       imageSize,
-      cryCount,
-      laughCount,
       likeCount,
       dislikeCount,
       heartCount,
+      laughCount,
+      cryCount,
       commentCount,
       prompt,
       negativePrompt,
