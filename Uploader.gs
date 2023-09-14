@@ -91,6 +91,12 @@ function updateCellWithImage(fileBlob, cellNotation) {
     // var dummyImageBlob = Utilities.newBlob("Dummy Image", "image/jpeg", "dummy.jpg");
     // fileBlob = dummyImageBlob
     if (fileBlob != null) {
+
+        if (typeof fileBlob === 'object') {
+            // Create a Blob from the image data
+            var fileBlob = Utilities.newBlob(fileBlob[0], fileBlob[1], fileBlob[2]);
+        }
+
         var imageFile = DriveApp.createFile(Utilities.newBlob(...fileBlob));
         // Set the access to anyone with the link
         imageFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
